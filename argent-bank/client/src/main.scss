@@ -1,0 +1,17 @@
+@use './style/colors';
+@use './style/reset';
+
+:root {
+    font-family: Avenir, Helvetica, Arial;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    color: colors.$txt-dark;
+}
+
+#root {
+    max-width: 1440px;
+    min-height: 100dvh;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+}
