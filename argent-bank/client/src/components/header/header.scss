@@ -1,0 +1,36 @@
+@use '../../style/colors';
+
+header {
+    flex-shrink: 0;
+
+    .main-nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 5px 20px;
+
+        &-logo-image {
+            max-width: 100%;
+            width: 200px;
+        }
+
+        &-item {
+            display: inline flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: bold;
+
+            &:not(:last-child) {
+                margin-right: 2rem;
+            }
+
+            &-text:hover {
+                text-decoration: underline;
+            }
+        }
+
+        .active {
+            color: colors.$txt-active;
+        }
+    }
+}

@@ -1,0 +1,9 @@
+@use '../../style/colors';
+
+.btn {
+    padding: 0.5rem;
+    border-color: colors.$primary;
+    background-color: colors.$primary;
+    color: colors.$light;
+    font-weight: 700;
+}
