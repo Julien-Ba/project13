@@ -1,4 +1,5 @@
 import './profile.scss';
+import { useSelector } from 'react-redux';
 import Button from '../../components/button/Button';
 import BalanceCard from '../../components/card/balance-card/BalanceCard';
 
@@ -9,13 +10,14 @@ const accounts = [
 ];
 
 export default function Profile() {
+    const { user } = useSelector((state) => state.auth);
     return (
         <main className='profile bg-dark'>
             <div className='profile__header'>
                 <h1 className='profile__title'>
                     Welcome back
                     <br />
-                    Tony Jarvis!
+                    {`${user.firstName} ${user.lastName}!`}
                 </h1>
                 <Button className='profile__btn--edit'>Edit Name</Button>
             </div>

@@ -10,7 +10,7 @@ export default function UserNavigation() {
         <>
             <NavLink to={'/profile'} className='main-nav-item'>
                 <i className='main-nav-item-icon fa fa-user-circle'></i>
-                <span className='main-nav-item-text'>{user.name}</span>
+                <span className='main-nav-item-text'>{user.firstName}</span>
             </NavLink>
             <Link to={'/'} className='main-nav-item' onClick={() => dispatch(logout())}>
                 <i className='main-nav-item-icon fa fa-sign-out'></i>

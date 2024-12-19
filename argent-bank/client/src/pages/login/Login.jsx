@@ -3,25 +3,34 @@ import { Navigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../../store/features/auth';
 import Button from '../../components/button/Button';
+import { useState } from 'react';
 
 export default function Login() {
     const dispatch = useDispatch();
     const { isLoading, error } = useSelector((state) => state.auth);
 
-    const handleSubmit = async (formData) => {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [redirectToProfile, setRedirectToProfile] = useState(false);
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
         const result = await dispatch(
             loginUser({
-                email: formData.get('email'),
-                password: formData.get('password'),
+                email: email,
+                password: password,
             })
         );
-
-        if (loginUser.fulfilled.match(result)) {
-            return <Navigate to='/profile' />;
-        } else {
+        if (result.error) {
             console.error(result.payload);
+        } else {
+            setRedirectToProfile(true);
         }
     };
+
+    if (redirectToProfile) {
+        return <Navigate to='/profile' />;
+    }
 
     return (
         <main className='login bg-dark'>
@@ -36,11 +45,27 @@ export default function Login() {
                     )}
                     <div className='input-wrapper'>
                         <label htmlFor='email'>Username</label>
-                        <input type='email' id='email' name='email' required disabled={isLoading} />
+                        <input
+                            type='email'
+                            id='email'
+                            name='email'
+                            onChange={(e) => setEmail(e.target.value)}
+                            value={email}
+                            required
+                            disabled={isLoading}
+                        />
                     </div>
                     <div className='input-wrapper'>
                         <label htmlFor='password'>Password</label>
-                        <input type='password' id='password' name='password' required disabled={isLoading} />
+                        <input
+                            type='password'
+                            id='password'
+                            name='password'
+                            onChange={(e) => setPassword(e.target.value)}
+                            value={password}
+                            required
+                            disabled={isLoading}
+                        />
                     </div>
                     <div className='input-remember'>
                         <input type='checkbox' id='remember-me' name='remember-me' disabled={isLoading} />
