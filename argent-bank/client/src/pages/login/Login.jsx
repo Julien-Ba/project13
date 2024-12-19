@@ -1,13 +1,17 @@
 import './login.scss';
+import { useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../../store/features/auth';
 import Button from '../../components/button/Button';
-import { useState } from 'react';
 
 export default function Login() {
     const dispatch = useDispatch();
-    const { isLoading, error } = useSelector((state) => state.auth);
+
+    const { isLoading: authLoading, error: authError } = useSelector((state) => state.auth);
+    const { isLoading: profileLoading, error: profileError } = useSelector((state) => state.profile);
+    const isLoading = authLoading || profileLoading;
+    const error = authError || profileError;
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -15,14 +19,14 @@ export default function Login() {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        const result = await dispatch(
+        const loginResult = await dispatch(
             loginUser({
                 email: email,
                 password: password,
             })
         );
-        if (result.error) {
-            console.error(result.payload);
+        if (loginResult.error) {
+            console.error(loginResult.payload);
         } else {
             setRedirectToProfile(true);
         }

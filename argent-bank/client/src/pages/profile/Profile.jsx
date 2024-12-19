@@ -10,7 +10,7 @@ const accounts = [
 ];
 
 export default function Profile() {
-    const { user } = useSelector((state) => state.auth);
+    const { user } = useSelector((state) => state.profile);
     return (
         <main className='profile bg-dark'>
             <div className='profile__header'>

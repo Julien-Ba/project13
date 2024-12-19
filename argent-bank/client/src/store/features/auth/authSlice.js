@@ -4,7 +4,6 @@ import { loginUser } from './authThunks';
 const authSlice = createSlice({
     name: 'auth',
     initialState: {
-        user: null,
         token: null,
         isAuthenticated: false,
         isLoading: false,
@@ -13,7 +12,6 @@ const authSlice = createSlice({
     reducers: {
         logout: (state) => {
             localStorage.removeItem('token');
-            state.user = null;
             state.token = null;
             state.isAuthenticated = false;
             state.error = null;
@@ -29,14 +27,13 @@ const authSlice = createSlice({
                 state.error = null;
             })
             .addCase(loginUser.fulfilled, (state, action) => {
-                state.isLoading = false;
-                state.isAuthenticated = true;
-                state.user = action.payload.user;
                 state.token = action.payload.token;
+                state.isAuthenticated = true;
+                state.isLoading = false;
             })
             .addCase(loginUser.rejected, (state, action) => {
-                state.isLoading = false;
                 state.error = action.payload;
+                state.isLoading = false;
             });
     },
 });
