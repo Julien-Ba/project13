@@ -1,10 +1,10 @@
 import { Link, NavLink } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { logout } from '../../../store/features/userSlice';
+import { logout } from '../../../store/features/auth';
 
 export default function UserNavigation() {
     const dispatch = useDispatch();
-    const { user } = useSelector((state) => state.user);
+    const { user } = useSelector((state) => state.auth);
 
     return (
         <>

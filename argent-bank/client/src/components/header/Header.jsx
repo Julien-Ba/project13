@@ -6,7 +6,7 @@ import AuthNavigation from './navigation/AuthNavigation';
 import UserNavigation from './navigation/UserNavigation';
 
 export default function Header() {
-    const { isAuthenticated } = useSelector((state) => state.user);
+    const { isAuthenticated } = useSelector((state) => state.auth);
     return (
         <header>
             <nav className='main-nav'>
