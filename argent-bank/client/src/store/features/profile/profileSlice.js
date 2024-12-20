@@ -36,11 +36,9 @@ const profileSlice = createSlice({
                 state.isLoading = true;
             })
             .addCase(editProfile.fulfilled, (state, action) => {
-                console.log(action.payload);
                 state.user.firstName = action.payload.firstName;
                 state.user.lastName = action.payload.lastName;
                 state.isLoading = false;
-                console.log(state.user);
             })
             .addCase(editProfile.rejected, (state, action) => {
                 state.error = action.payload;

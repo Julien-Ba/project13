@@ -54,7 +54,7 @@ export const editProfile = createAsyncThunk(
                 return rejectWithValue(profileData.message || 'Profile validation failed');
             }
 
-            return profileData.body;
+            return { firstName: newFirstName, lastName: newLastName };
         } catch (error) {
             return rejectWithValue(`An error occurred during authentication: ${error}`);
         }
