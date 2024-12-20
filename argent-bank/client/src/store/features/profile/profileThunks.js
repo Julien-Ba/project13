@@ -45,7 +45,7 @@ export const editProfile = createAsyncThunk(
                     'Content-Type': 'application/json',
                     Authorization: `Bearer ${state.auth.token}`,
                 },
-                body: JSON.stringify({ newFirstName, newLastName }),
+                body: JSON.stringify({ firstName: newFirstName, lastName: newLastName }),
             });
 
             const profileData = await profileResponse.json();
