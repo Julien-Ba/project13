@@ -3,9 +3,14 @@ import PropTypes from 'prop-types';
 import SubmitButton from './SubmitButton';
 
 export default function Button({ children, className = '', type = 'button', onClick, disabled }) {
-    if (type === 'submit') return <SubmitButton className={className}>{children}</SubmitButton>;
+    if (type === 'submit')
+        return (
+            <SubmitButton className={className} disabled={disabled}>
+                {children}
+            </SubmitButton>
+        );
     return (
-        <button type={type} className={`btn ${className}`} onClick={onClick} disabled={disabled}>
+        <button type={type} className={`btn ${className}`} onClick={onClick}>
             {children}
         </button>
     );
