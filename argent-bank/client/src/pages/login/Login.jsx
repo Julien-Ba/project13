@@ -46,11 +46,9 @@ export default function Login() {
                         <input
                             type='email'
                             id='email'
-                            name='email'
                             onChange={(e) => setEmail(e.target.value)}
                             value={email}
                             required
-                            disabled={isLoading}
                         />
                     </div>
                     <div className='input-wrapper'>
@@ -58,15 +56,13 @@ export default function Login() {
                         <input
                             type='password'
                             id='password'
-                            name='password'
                             onChange={(e) => setPassword(e.target.value)}
                             value={password}
                             required
-                            disabled={isLoading}
                         />
                     </div>
                     <div className='input-remember'>
-                        <input type='checkbox' id='remember-me' name='remember-me' disabled={isLoading} />
+                        <input type='checkbox' id='remember-me' />
                         <label htmlFor='remember-me'>Remember me</label>
                     </div>
                     <Button type='submit' className='form__btn--submit' disabled={isLoading}>
