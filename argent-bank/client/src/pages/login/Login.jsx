@@ -1,12 +1,13 @@
 import './login.scss';
 import { useState } from 'react';
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../../store/features/auth';
 import Button from '../../components/button/Button';
 
 export default function Login() {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const { isLoading: authLoading, error: authError } = useSelector((state) => state.auth);
     const { isLoading: profileLoading, error: profileError } = useSelector((state) => state.profile);
@@ -15,7 +16,6 @@ export default function Login() {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [redirectToProfile, setRedirectToProfile] = useState(false);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -28,13 +28,9 @@ export default function Login() {
         if (loginResult.error) {
             console.error(loginResult.payload);
         } else {
-            setRedirectToProfile(true);
+            navigate('/profile');
         }
     };
-
-    if (redirectToProfile) {
-        return <Navigate to='/profile' />;
-    }
 
     return (
         <main className='login bg-dark'>
