@@ -1,13 +1,11 @@
 import './button.scss';
-import { useFormStatus } from 'react-dom';
 import PropTypes from 'prop-types';
 
-export default function SubmitButton({ children, className = '' }) {
-    const { pending } = useFormStatus();
+export default function SubmitButton({ children, className = '', disabled }) {
     return (
-        <button type='submit' className={`btn ${className}`} disabled={pending}>
+        <button type='submit' className={`btn ${className}`} disabled={disabled}>
             {children}
-            {pending && '...'}
+            {disabled && '...'}
         </button>
     );
 }
@@ -15,4 +13,5 @@ export default function SubmitButton({ children, className = '' }) {
 SubmitButton.propTypes = {
     children: PropTypes.node.isRequired,
     className: PropTypes.string,
+    disabled: PropTypes.bool,
 };

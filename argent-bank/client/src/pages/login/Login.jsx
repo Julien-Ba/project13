@@ -3,14 +3,14 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../../store/features/auth';
+import { selectLoginStatus } from '../../store/selectors/statusSelectors';
 import Button from '../../components/button/Button';
 
 export default function Login() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const { isLoading: authLoading, error: authError } = useSelector((state) => state.auth);
-    const { isLoading: profileLoading, error: profileError } = useSelector((state) => state.profile);
+    const { authLoading, authError, profileLoading, profileError } = useSelector(selectLoginStatus);
     const isLoading = authLoading || profileLoading;
     const error = authError || profileError;
 
@@ -19,15 +19,13 @@ export default function Login() {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        const loginResult = await dispatch(
+        await dispatch(
             loginUser({
                 email: email,
                 password: password,
             })
         );
-        if (loginResult.error) {
-            console.error(loginResult.payload);
-        } else {
+        if (!error) {
             navigate('/profile');
         }
     };
@@ -71,7 +69,7 @@ export default function Login() {
                         <input type='checkbox' id='remember-me' name='remember-me' disabled={isLoading} />
                         <label htmlFor='remember-me'>Remember me</label>
                     </div>
-                    <Button type='submit' className='form__btn--submit'>
+                    <Button type='submit' className='form__btn--submit' disabled={isLoading}>
                         Sign In
                     </Button>
                 </form>
