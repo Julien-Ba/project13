@@ -10,12 +10,17 @@ export default function Login() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const { authLoading, authError, profileLoading, profileError } = useSelector(selectLoginStatus);
+    const { isAuthenticated, authLoading, authError, profileLoading, profileError } = useSelector(selectLoginStatus);
     const isLoading = authLoading || profileLoading;
     const error = authError || profileError;
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [rememberMe, setRememberMe] = useState(false);
+
+    if (isAuthenticated) {
+        return navigate('/profile');
+    }
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -23,6 +28,7 @@ export default function Login() {
             loginUser({
                 email: email,
                 password: password,
+                memberMe: rememberMe,
             })
         );
         if (!error) {
@@ -62,7 +68,12 @@ export default function Login() {
                         />
                     </div>
                     <div className='input-remember'>
-                        <input type='checkbox' id='remember-me' />
+                        <input
+                            type='checkbox'
+                            id='remember-me'
+                            checked={rememberMe}
+                            onChange={(e) => setRememberMe(e.target.checked)}
+                        />
                         <label htmlFor='remember-me'>Remember me</label>
                     </div>
                     <Button type='submit' className='form__btn--submit' disabled={isLoading}>

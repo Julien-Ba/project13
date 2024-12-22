@@ -1,11 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { loginUser } from './authThunks';
 
+const tokenStorage = sessionStorage.getItem('userToken') || localStorage.getItem('userToken');
+
 const authSlice = createSlice({
     name: 'auth',
     initialState: {
-        token: null,
-        isAuthenticated: false,
+        token: tokenStorage,
+        isAuthenticated: Boolean(tokenStorage),
         isLoading: false,
         error: null,
     },
