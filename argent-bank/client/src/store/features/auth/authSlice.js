@@ -2,24 +2,28 @@ import { createSlice } from '@reduxjs/toolkit';
 import { loginUser } from './authThunks';
 
 const tokenStorage = sessionStorage.getItem('userToken') || localStorage.getItem('userToken');
+const initialState = {
+    token: tokenStorage,
+    isAuthenticated: Boolean(tokenStorage),
+    isLoading: false,
+    logout: false,
+    error: null,
+};
 
 const authSlice = createSlice({
     name: 'auth',
-    initialState: {
-        token: tokenStorage,
-        isAuthenticated: Boolean(tokenStorage),
-        isLoading: false,
-        error: null,
-    },
+    initialState,
     reducers: {
         logout: (state) => {
             sessionStorage.removeItem('userToken');
-            state.token = null;
+            state.logout = true;
             state.isAuthenticated = false;
             state.error = null;
         },
-        clearError: (state) => {
-            state.error = null;
+        reinitAuth: (state) => {
+            Object.keys(initialState).forEach((key) => {
+                state[key] = initialState[key];
+            });
         },
     },
     extraReducers: (builder) => {
@@ -29,6 +33,7 @@ const authSlice = createSlice({
                 state.error = null;
             })
             .addCase(loginUser.fulfilled, (state, action) => {
+                state.logout = false;
                 state.token = action.payload.token;
                 state.isAuthenticated = true;
                 state.isLoading = false;
