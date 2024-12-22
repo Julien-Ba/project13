@@ -13,6 +13,7 @@ const authSlice = createSlice({
     },
     reducers: {
         logout: (state) => {
+            sessionStorage.removeItem('userToken');
             state.token = null;
             state.isAuthenticated = false;
             state.error = null;
