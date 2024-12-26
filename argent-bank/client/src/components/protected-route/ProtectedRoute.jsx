@@ -21,7 +21,7 @@ export function ProtectedRoute({ children }) {
     }
 
     if (isLoginOut) {
-        return <Navigate to='/' />;
+        return <></>;
     }
 
     if (!isAuthenticated || !user) {
