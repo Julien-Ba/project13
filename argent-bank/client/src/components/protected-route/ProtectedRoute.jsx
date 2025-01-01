@@ -12,7 +12,10 @@ export function ProtectedRoute({ children }) {
 
     useEffect(() => {
         if (isLoginOut) {
-            dispatch(reinitAuth());
+            // need to be set in the macro-task queue to allow the navigate to execute first
+            setTimeout(() => {
+                dispatch(reinitAuth());
+            }, 0);
         }
     }, [dispatch, isLoginOut]);
 
@@ -21,6 +24,7 @@ export function ProtectedRoute({ children }) {
     }
 
     if (isLoginOut) {
+        // is redirected by the Link in UserNavigation
         return <></>;
     }
 

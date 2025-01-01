@@ -1,9 +1,8 @@
-import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../../../store/features/auth';
 
 export default function UserNavigation() {
-    const navigate = useNavigate();
     const dispatch = useDispatch();
     const { user, isLoading } = useSelector((state) => state.profile);
     const userName = isLoading ? '' : user.firstName;
@@ -14,7 +13,7 @@ export default function UserNavigation() {
                 <i className='main-nav-item-icon fa fa-user-circle'></i>
                 <span className='main-nav-item-text'>{userName}</span>
             </NavLink>
-            <Link to={'/'} className='main-nav-item' onClick={() => dispatch(logout()).then(() => navigate('/'))}>
+            <Link to={'/'} className='main-nav-item' onClick={() => dispatch(logout())}>
                 <i className='main-nav-item-icon fa fa-sign-out'></i>
                 <span className='main-nav-item-text'>Sign Out</span>
             </Link>
