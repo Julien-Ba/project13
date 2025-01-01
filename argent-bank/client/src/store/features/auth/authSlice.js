@@ -1,7 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { loginUser } from './authThunks';
 
-const tokenStorage = sessionStorage.getItem('userToken') || localStorage.getItem('userToken');
+const tokenStorage =
+    sessionStorage.getItem('userToken') || localStorage.getItem('userToken');
 const initialState = {
     token: tokenStorage,
     isAuthenticated: Boolean(tokenStorage),
@@ -15,10 +16,10 @@ const authSlice = createSlice({
     initialState,
     reducers: {
         logout: (state) => {
-            sessionStorage.removeItem('userToken');
+            state.isLoading = true;
             state.isLoginOut = true;
+            sessionStorage.removeItem('userToken');
             state.isAuthenticated = false;
-            state.error = null;
         },
         reinitAuth: (state) => {
             Object.keys(initialState).forEach((key) => {
