@@ -27,3 +27,22 @@
         gap: 2rem;
     }
 }
+
+.edit-profile {
+    margin-block-start: 1.25rem;
+
+    .input-wrapper {
+        margin-block: 0.91rem;
+
+        label {
+            margin-inline-end: 1rem;
+            color: colors.$light;
+            font-weight: 700;
+        }
+    }
+
+    .form__btn--submit {
+        margin-block-start: 1.125rem;
+        padding-inline: 1.5rem;
+    }
+}

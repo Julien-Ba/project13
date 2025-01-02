@@ -35,22 +35,18 @@ export default function Profile() {
 
     return (
         <main className='profile bg-dark'>
-            <div className='profile__header'>
-                <h1 className='profile__title'>
-                    Welcome back
-                    <br />
-                    {`${user.firstName} ${user.lastName}!`}
-                </h1>
-                <Button className='profile__btn--edit' onClick={() => setIsModalOpen(true)}>
-                    Edit Name
-                </Button>
-            </div>
-            <div className='profile__accounts'>
-                <h2 className='sr-only'>Accounts</h2>
-                {accounts.map((account) => (
-                    <BalanceCard key={account.id} {...account} />
-                ))}
-            </div>
+            {!isModalOpen && (
+                <div className='profile__header'>
+                    <h1 className='profile__title'>
+                        Welcome back
+                        <br />
+                        {`${user.firstName} ${user.lastName}!`}
+                    </h1>
+                    <Button className='profile__btn--edit' onClick={() => setIsModalOpen(true)}>
+                        Edit Name
+                    </Button>
+                </div>
+            )}
             {isModalOpen && (
                 <form className='edit-profile' onSubmit={handleSubmit}>
                     <div className='input-wrapper'>
@@ -76,10 +72,16 @@ export default function Profile() {
                         />
                     </div>
                     <Button type='submit' className='form__btn--submit'>
-                        Send
+                        Save
                     </Button>
                 </form>
             )}
+            <div className='profile__accounts'>
+                <h2 className='sr-only'>Accounts</h2>
+                {accounts.map((account) => (
+                    <BalanceCard key={account.id} {...account} />
+                ))}
+            </div>
         </main>
     );
 }
