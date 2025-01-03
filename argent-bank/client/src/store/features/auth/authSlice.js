@@ -1,8 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { loginUser } from './authThunks';
 
-const tokenStorage =
-    sessionStorage.getItem('userToken') || localStorage.getItem('userToken');
+const tokenStorage = sessionStorage.getItem('userToken') || localStorage.getItem('userToken');
 const initialState = {
     token: tokenStorage,
     isAuthenticated: Boolean(tokenStorage),
@@ -34,7 +33,6 @@ const authSlice = createSlice({
                 state.error = null;
             })
             .addCase(loginUser.fulfilled, (state, action) => {
-                state.logout = false;
                 state.token = action.payload.token;
                 state.isAuthenticated = true;
                 state.isLoading = false;
