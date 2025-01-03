@@ -1,13 +1,13 @@
-swagger: '2.0'
+openapi: 3.0.3
 info:
     title: Bank Argent API documentation
     description: Contains all available API endpoints in this codebase
-    version: '1.0.0'
-    termsOfService: 'http://swagger.io/terms/'
-host: localhost:3001
-basePath: /api/v1
-schemes:
-    - http
+    version: 1.0.1
+    termsOfService: http://swagger.io/terms/
+servers:
+    - url: http://localhost:3001/api/v1
+      description: Development server
+
 paths:
     /user/login:
         post:
@@ -15,343 +15,359 @@ paths:
                 - User Module
             summary: Login
             description: API for Login
-            parameters:
-                - in: body
-                  name: body
-                  description: Login Payload
-                  required: true
-                  schema:
-                      $ref: '#/definitions/Login'
-            produces:
-                - application/json
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/Login'
             responses:
                 '200':
                     description: Login Successfully
-                    schema:
-                        $ref: '#/definitions/LoginResponse'
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/LoginResponse'
                 '400':
                     description: Invalid Fields
                 '500':
                     description: Internal Server Error
+
     /user/signup:
         post:
             tags:
                 - User Module
             summary: Signup
             description: API for Signup
-            parameters:
-                - in: body
-                  name: body
-                  description: Signup Payload
-                  required: true
-                  schema:
-                      $ref: '#/definitions/User'
-            produces:
-                - application/json
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/User'
             responses:
                 '200':
                     description: Signup Successfully
-                    schema:
-                        $ref: '#/definitions/ApiResponse'
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ApiResponse'
                 '400':
                     description: Invalid Fields
                 '500':
                     description: Internal Server Error
+
     /user/profile:
-        post:
+        get:
             security:
-                - Bearer: []
+                - bearerAuth: []
             tags:
                 - User Module
             summary: User Profile API
             description: API for fetching a user profile
-            parameters:
-                - in: header
-                  name: Authorization
-                  description: Attach Bearer JWT token
-                  required: true
-            produces:
-                - application/json
             responses:
                 '200':
                     description: User profile retrieved successfully
-                    schema:
-                        $ref: '#/definitions/ApiResponse'
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ApiResponse'
                 '400':
                     description: Invalid Fields
                 '500':
                     description: Internal Server Error
+
         put:
             security:
-                - Bearer: []
+                - bearerAuth: []
             tags:
                 - User Module
             summary: User Profile API
             description: API for updating a user profile
-            parameters:
-                - in: header
-                  name: Authorization
-                  description: Attach Bearer JWT token
-                  required: true
-                - in: body
-                  name: body
-                  description: Update user profile attributes
-                  required: true
-                  schema:
-                      $ref: '#/definitions/UserProfile'
-            produces:
-                - application/json
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/UserProfile'
             responses:
                 '200':
-                    description: User profile retrieved successfully
-                    schema:
-                        $ref: '#/definitions/ApiResponse'
+                    description: User profile updated successfully
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ApiResponse'
                 '400':
                     description: Invalid Fields
                 '500':
                     description: Internal Server Error
+
     /user/accounts:
-        post:
+        get:
             security:
-                - Bearer: []
+                - bearerAuth: []
             tags:
                 - User Module
             summary: Accounts API
             description: API for fetching the accounts of the user
-            parameters:
-                - in: header
-                  name: Authorization
-                  description: Attach Bearer JWT token
-                  required: true
-            produces:
-                - application/json
             responses:
                 '200':
                     description: Accounts retrieved successfully
-                    schema:
-                        $ref: '#/definitions/AccountsResponse'
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AccountsResponse'
                 '400':
                     description: Invalid Fields
                 '500':
                     description: Internal Server Error
+
     /user/transactions:
-        post:
+        get:
             security:
-                - Bearer: []
+                - bearerAuth: []
             tags:
                 - User Module
             summary: Transactions API
-            description: API for fetching the transactions of an account
+            description: API for fetching the list of transactions of an account
             parameters:
-                - in: header
-                  name: Authorization
-                  description: Attach Bearer JWT token
-                  required: true
-                - in: body
-                  name: body
-                  description: Account ID
+                - in: query
+                  name: accountId
                   required: true
                   schema:
-                      $ref: '#/definitions/AccountInput'
-            produces:
-                - application/json
+                      type: string
+                  description: Account identifier
+                - in: query
+                  name: accountType
+                  required: true
+                  schema:
+                      $ref: '#/components/schemas/AccountType'
+                  description: Type of the account
             responses:
                 '200':
                     description: Transactions retrieved successfully
-                    schema:
-                        $ref: '#/definitions/TransactionsResponse'
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/TransactionsResponse'
                 '400':
-                    description: Invalid Fields
+                    description: Invalid Parameters
                 '500':
                     description: Internal Server Error
-        patch:
+
+    /user/transactionDetails:
+        get:
             security:
-                - Bearer: []
+                - bearerAuth: []
+            tags:
+                - User Module
+            summary: Transaction API
+            description: API for fetching the details of a single transaction
+            parameters:
+                - in: query
+                  name: transactionId
+                  required: true
+                  schema:
+                      type: string
+                  description: Transaction identifier
+            responses:
+                '200':
+                    description: Transaction details retrieved successfully
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/TransactionResponse'
+                '400':
+                    description: Invalid Parameters
+                '500':
+                    description: Internal Server Error
+
+        put:
+            security:
+                - bearerAuth: []
             tags:
                 - User Module
             summary: Edit Transaction API
-            description: API for updating transaction details
+            description: Transaction API - Edit the Details of a transaction
             parameters:
-                - in: header
-                  name: Authorization
-                  description: Attach Bearer JWT token
-                  required: true
-                - in: body
-                  name: body
-                  description: Transaction updates
+                - in: query
+                  name: transactionId
                   required: true
                   schema:
-                      $ref: '#/definitions/TransactionInput'
-            produces:
-                - application/json
+                      type: string
+                  description: Transaction identifier
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                category:
+                                    type: string
+                                    description: updated transaction category
+                                notes:
+                                    type: string
+                                    description: updated transaction notes
             responses:
                 '200':
                     description: Transaction updated successfully
-                    schema:
-                        $ref: '#/definitions/TransactionResponse'
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/TransactionResponse'
                 '400':
                     description: Invalid Fields
                 '500':
                     description: Internal Server Error
-securityDefinitions:
-    Bearer:
-        type: apiKey
-        name: Authorization
-        in: header
-definitions:
-    User:
-        properties:
-            email:
-                type: string
-                description: user email
-            password:
-                type: string
-                description: user password
-            firstName:
-                type: string
-                description: user first name
-            lastName:
-                type: string
-                description: user last name
-        required: ['email', 'password', 'firstName', 'lastName']
-    Login:
-        properties:
-            email:
-                type: string
-                description: user email
-            password:
-                type: string
-                description: user password
-        required: ['email', 'password']
-    ApiResponse:
-        type: object
-        properties:
-            status:
-                type: integer
-            message:
-                type: string
-            body:
-                type: object
-                properties:
-                    id:
-                        type: string
-                    email:
-                        type: string
-    LoginResponse:
-        type: object
-        properties:
-            token:
-                type: string
-    UserProfile:
-        type: object
-        properties:
-            firstName:
-                type: string
-            lastName:
-                type: string
-    AccountType:
-        type: string
-        enum: [checking, savings, credit-card]
-        description: Available types of bank accounts
-    TransactionType:
-        type: string
-        enum: [debit, credit]
-        description: Types of transactions
-    Account:
-        type: object
-        properties:
-            id:
-                type: string
-                description: account identifier
-            name:
-                type: string
-                description: account name
-            type:
-                $ref: '#/definitions/AccountType'
-            balance:
-                type: number
-                format: double
-                description: current balance of the account
-    AccountsResponse:
-        type: object
-        properties:
-            status:
-                type: integer
-            message:
-                type: string
-            body:
-                type: array
-                items:
-                    $ref: '#/definitions/Account'
-    Transaction:
-        type: object
-        properties:
-            id:
-                type: string
-                description: transaction identifier
-            date:
-                type: string
-                format: date-time
-                description: transaction date
-            description:
-                type: string
-                description: transaction description
-            amount:
-                type: number
-                format: double
-                description: transaction amount
-            type:
-                $ref: '#/definitions/TransactionType'
-            category:
-                type: string
-                description: transaction category
-            notes:
-                type: string
-                description: transaction notes
-    TransactionResponse:
-        type: object
-        properties:
-            status:
-                type: integer
-            message:
-                type: string
-            body:
-                $ref: '#/definitions/Transaction'
-    TransactionsResponse:
-        type: object
-        properties:
-            status:
-                type: integer
-            message:
-                type: string
-            body:
-                type: array
-                items:
-                    $ref: '#/definitions/Transaction'
-    AccountInput:
-        type: object
-        properties:
-            accountId:
-                type: string
-                description: account identifier
-            accountType:
-                $ref: '#/definitions/AccountType'
-        required: ['accountId', 'accountType']
-    TransactionInput:
-        type: object
-        properties:
-            transactionId:
-                type: string
-                description: transaction identifier
-            accountId:
-                type: string
-                description: account identifier
-            accountType:
-                $ref: '#/definitions/AccountType'
-            category:
-                type: string
-                description: updated transaction category
-            notes:
-                type: string
-                description: updated transaction notes
-        required: ['transactionId', 'accountId', 'accountType']
+
+components:
+    securitySchemes:
+        bearerAuth:
+            type: http
+            scheme: bearer
+            bearerFormat: JWT
+
+    schemas:
+        User:
+            type: object
+            properties:
+                email:
+                    type: string
+                    description: user email
+                password:
+                    type: string
+                    description: user password
+                firstName:
+                    type: string
+                    description: user first name
+                lastName:
+                    type: string
+                    description: user last name
+            required: ['email', 'password', 'firstName', 'lastName']
+
+        Login:
+            type: object
+            properties:
+                email:
+                    type: string
+                    description: user email
+                password:
+                    type: string
+                    description: user password
+            required: ['email', 'password']
+
+        ApiResponse:
+            type: object
+            properties:
+                status:
+                    type: integer
+                message:
+                    type: string
+                body:
+                    type: object
+                    properties:
+                        id:
+                            type: string
+                        email:
+                            type: string
+
+        LoginResponse:
+            type: object
+            properties:
+                token:
+                    type: string
+
+        UserProfile:
+            type: object
+            properties:
+                firstName:
+                    type: string
+                lastName:
+                    type: string
+
+        AccountType:
+            type: string
+            enum: [checking, savings, credit-card]
+            description: Available types of bank accounts
+
+        TransactionType:
+            type: string
+            enum: [debit, credit]
+            description: Types of transactions
+
+        Account:
+            type: object
+            properties:
+                id:
+                    type: string
+                    description: account identifier
+                name:
+                    type: string
+                    description: account name
+                type:
+                    $ref: '#/components/schemas/AccountType'
+                balance:
+                    type: number
+                    format: double
+                    description: current balance of the account
+
+        AccountsResponse:
+            type: object
+            properties:
+                status:
+                    type: integer
+                message:
+                    type: string
+                body:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/Account'
+
+        Transaction:
+            type: object
+            properties:
+                id:
+                    type: string
+                    description: transaction identifier
+                date:
+                    type: string
+                    format: date-time
+                    description: transaction date
+                description:
+                    type: string
+                    description: transaction description
+                amount:
+                    type: number
+                    format: double
+                    description: transaction amount
+                type:
+                    $ref: '#/components/schemas/TransactionType'
+                category:
+                    type: string
+                    description: transaction category
+                notes:
+                    type: string
+                    description: transaction notes
+
+        TransactionResponse:
+            type: object
+            properties:
+                status:
+                    type: integer
+                message:
+                    type: string
+                body:
+                    $ref: '#/components/schemas/Transaction'
+
+        TransactionsResponse:
+            type: object
+            properties:
+                status:
+                    type: integer
+                message:
+                    type: string
+                body:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/Transaction'
