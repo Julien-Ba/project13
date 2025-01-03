@@ -1,9 +1,21 @@
 import './home.scss';
+import { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { reinitAuth } from '../../store/features/auth';
 import chat from '../../assets/icon-chat.png';
 import money from '../../assets/icon-money.png';
 import security from '../../assets/icon-security.png';
 
 export default function Home() {
+    const dispatch = useDispatch();
+    const { isLoginOut } = useSelector((state) => state.auth);
+
+    useEffect(() => {
+        if (isLoginOut) {
+            dispatch(reinitAuth());
+        }
+    }, [dispatch, isLoginOut]);
+
     return (
         <main>
             <div className='hero'>
